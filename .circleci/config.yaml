@@ -1,0 +1,60 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/python:3.11
+
+    steps:
+      - checkout
+
+      # 🔐 LOAD THE WRITE-ENABLED SSH KEY
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:o7bvdelRd6hDlNU7LCsQlNg8lY0YysOOfX7QbMS+3zA"
+
+      # 🔐 TRUST GITHUB HOST
+      - run:
+          name: Add GitHub to known_hosts
+          command: |
+            mkdir -p ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - setup_remote_docker
+
+      - run:
+          name: Install AWS CLI
+          command: |
+            curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip -q awscliv2.zip && sudo ./aws/install
+            aws --version
+
+      - run:
+          name: Login to ECR and Build & Push Docker image
+          command: |
+            aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin 060172240101.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
+            docker build -t 060172240101.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev/marketplace-egv/frontend:${CIRCLE_SHA1} .
+            docker push 060172240101.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev/marketplace-egv/frontend:${CIRCLE_SHA1}
+
+      - run:
+          name: Update GitOps repo
+          command: |
+            git clone git@github.com:loylty-ai/gitops-config.git
+            cd gitops-config/apps/egv-frontend
+
+            # Set both repository (ECR) and tag from CI
+            sed -i "s|^ *repository:.*|  repository: 060172240101.dkr.ecr.ap-south-1.amazonaws.com/dev/marketplace-egv/frontend|" values.yaml
+            sed -i "s/^ *tag:.*/  tag: ${CIRCLE_SHA1}/" values.yaml
+
+            git config user.email "ci@circleci"
+            git config user.name "circleci"
+            git add values.yaml
+            git commit -m "egv-frontend → ${CIRCLE_SHA1}"
+            git push
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+
