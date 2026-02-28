@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { v7 as uuidv7 } from 'uuid';
 
 const api = axios.create({
   baseURL: '/api/v1',
@@ -12,7 +13,7 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  config.headers["X-Request-Id"] = crypto.randomUUID();
+  config.headers["X-Request-Id"] = uuidv7();
   config.headers["X-Client-Id"] = "dashboard-web";
   config.headers["X-Client-Version"] = "1.0.0";
 

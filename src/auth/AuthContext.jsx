@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import api from '../api/axios';
+import { v7 as uuidv7 } from 'uuid';
 
 const AuthContext = createContext(null);
 
@@ -26,7 +27,7 @@ export function AuthProvider({ children }) {
 
   const login = async (username, password) => {
 
-    const idempotencyKey = crypto.randomUUID();
+    const idempotencyKey = uuidv7();
 
     const res = await api.post(
       '/auth/login', 
