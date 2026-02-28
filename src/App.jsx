@@ -23,7 +23,7 @@ import SyncJobLogs from './pages/SyncJobLogs';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.VITE_BASE_URL}>
       <Toaster position="top-right" />
       <Routes>
         <Route path="/login" element={<Login />} />
