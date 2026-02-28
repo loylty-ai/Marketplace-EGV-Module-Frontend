@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: import.meta.env.VITE_BASE_URL ? `${import.meta.env.VITE_BASE_URL}/` : "/",
+  base: '/dev/egv-frontend/',
   plugins: [react()],
   resolve: {
     alias: {
