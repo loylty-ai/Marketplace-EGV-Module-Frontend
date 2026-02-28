@@ -2,7 +2,7 @@ import axios from 'axios';
 import { v7 as uuidv7 } from 'uuid';
 
 const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: '/dev/egv-backend/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -14,7 +14,7 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   config.headers["X-Request-Id"] = uuidv7();
-  config.headers["X-Client-Id"] = "dashboard-web";
+  config.headers["X-Client-Id"] = "egv-frontend";
   config.headers["X-Client-Version"] = "1.0.0";
 
   return config;
