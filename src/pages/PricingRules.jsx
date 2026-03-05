@@ -354,6 +354,40 @@ export default function PricingRules() {
         return;
       }
 
+      if (meta && meta.name === "cardTierId") {
+        const selectedCardTierOptionId = eOrValue;
+        const selectedCardTier = Array.isArray(tiers)
+          ? tiers.find(
+              (t) =>
+                String(t.cardTierId ?? t.id ?? t.uuid) === String(selectedCardTierOptionId)
+            )
+          : null;
+      }
+
+      if (meta && meta.name === "voucherId") {
+        const selectedVoucherOptionId = eOrValue;
+        const selectedVoucher = Array.isArray(vouchers)
+          ? vouchers.find(
+              (v) =>
+                String(v.voucherId ?? v.id ?? v.uuid) === String(selectedVoucherOptionId)
+            )
+          : null;
+        setSelectedVoucherUUID(selectedVoucher?.uuid ?? "");
+        setForm((prev) => ({
+          ...prev,
+          voucherId: selectedVoucherOptionId,
+        }));
+        return;
+      }
+
+      if (meta && meta.name === "discountType") {
+        setForm((prev) => ({
+          ...prev,
+          discountType: eOrValue,
+        }));
+        return;
+      }
+
       // If using native control fallback (e.target)
       if (eOrValue && eOrValue.target) {
         const e = eOrValue;
@@ -764,7 +798,7 @@ function AddPricingRuleModal({
                 id="cardTierId"
                 name="cardTierId"
                 value={form.cardTierId}
-                onChange={onChange}
+                onChange={(val) => onChange(val, { name: "cardTierId" })}
                 options={tierOptions}
                 placeholder="Select Card Tier"
                 disabled={!form.cardId}
@@ -786,7 +820,7 @@ function AddPricingRuleModal({
               id="voucherId"
               name="voucherId"
               value={form.voucherId}
-              onChange={onChange}
+              onChange={(val) => onChange(val, { name: "voucherId" })}
               options={voucherOptions}
               placeholder="Select Voucher"
               disabled={false}

@@ -63,7 +63,7 @@ export default function Dashboard() {
   // Vouchers created this month count
   const fetchVouchersMonthCount = () => {
     api.get("/vouchers/count/this-month")
-      .then((res) => setNewVouchersCount(res.data.data || 0))
+      .then((res) => setNewVouchersCount(res.data || 0))
       .catch(() => setNewVouchersCount(0))
       .finally(() => setLoading(false));
   }
@@ -90,7 +90,7 @@ export default function Dashboard() {
     fetchCardsCount();
     fetchCardsMonthCount();
     fetchVouchersCount();
-    // fetchVouchersMonthCount();
+    fetchVouchersMonthCount();
     fetchVendorsCount();
     fetchVendorsMonthCount();
   }, []);
