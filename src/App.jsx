@@ -20,10 +20,11 @@ import { Toaster } from 'react-hot-toast';
 import VendorDetails from './pages/VendorDetails';
 import AuditLogs from './pages/AuditLogs';
 import SyncJobLogs from './pages/SyncJobLogs';
+import VisibilityRules from './pages/VisibilityRules';
 
 function App() {
   return (
-    <BrowserRouter basename={'/dev/egv-frontend'}>
+    <BrowserRouter>
       <Toaster position="top-right" />
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -82,6 +83,7 @@ function App() {
           <Route path="bank-vendors" element={<ProtectedRoute allowedRoles={['ADMIN', 'OPERATIONS']}><BankVendors /></ProtectedRoute>} />
           <Route path="vendors" element={<ProtectedRoute allowedRoles={['ADMIN']}><Vendors /></ProtectedRoute>} />
           <Route path="pricing-rules" element={<ProtectedRoute allowedRoles={['ADMIN', 'OPERATIONS']}><PricingRules /></ProtectedRoute>} />
+          <Route path="visibility-rules" element={<ProtectedRoute allowedRoles={['ADMIN', 'OPERATIONS']}><VisibilityRules /></ProtectedRoute>} />
           <Route path="approvals" element={<ProtectedRoute allowedRoles={['ADMIN', 'APPROVER']}><Approvals /></ProtectedRoute>} />
           <Route path="users" element={<ProtectedRoute allowedRoles={['ADMIN']}><Users /></ProtectedRoute>} />
         </Route>

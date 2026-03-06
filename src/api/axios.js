@@ -2,7 +2,7 @@ import axios from 'axios';
 import { v7 as uuidv7 } from 'uuid';
 
 const api = axios.create({
-  baseURL: '/dev/egv-backend/api/v1',
+  baseURL: '/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },

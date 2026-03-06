@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { MoreHorizontal, Zap, Tag, Settings, LogOut, ChevronUp, Briefcase, LayoutDashboard, Building2, CreditCard, Layers, ShoppingBag, History, Users, ChevronDown, Logs } from 'lucide-react';
+import { MoreHorizontal, Zap, Tag, Settings, LogOut, ChevronUp, Briefcase, LayoutDashboard, Building2, CreditCard, Layers, ShoppingBag, History, Users, ChevronDown, Logs, SearchCheck } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 
 const getNavStructure = (isAdmin) => [
@@ -40,7 +40,8 @@ const getNavStructure = (isAdmin) => [
     menuKey: 'configuration',
     children: [
       { icon: <CreditCard size={16} />, label: 'Bank-Vendor Mapping', href: '/bank-vendors', match: /^\/bank-vendors/, key: 'Bank-Vendor-Mapping' },
-      { icon: <Settings size={16} />, label: 'Pricing Rules', href: '/pricing-rules', match: /^\/pricing-rules/, key: 'Pricing-Rules' }
+      { icon: <Settings size={16} />, label: 'Pricing Rules', href: '/pricing-rules', match: /^\/pricing-rules/, key: 'Pricing-Rules' },
+      { icon: <SearchCheck size={16} />, label: 'Visibility Rules', href: '/visibility-rules', match: /^\/visibility-rules/, key: 'Visibility-Rules' }
     ]
   },
   ...(isAdmin()
