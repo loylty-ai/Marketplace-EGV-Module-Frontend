@@ -28,49 +28,51 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-xl shadow-md border border-slate-200 p-8">
-          <h1 className="text-2xl font-semibold text-slate-800 mb-2">Dashboard</h1>
-          <p className="text-slate-600 mb-6">Sign in to your account</p>
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <div className="w-full max-w-md animate-in-slide-up">
+        <div className="bg-card rounded-xl shadow-modal border border-border p-8">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-foreground tracking-tight">Dashboard</h1>
+            <p className="text-sm text-muted-foreground mt-1">Sign in to your account</p>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="bg-red-50 text-red-700 px-4 py-3 rounded-lg text-sm border border-red-100">
+              <div className="bg-destructive/10 text-destructive px-4 py-3 rounded-lg text-sm font-medium border border-destructive/20">
                 {error}
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Username</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">Username</label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                className="w-full h-10 px-3 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors duration-fast"
                 required
                 autoFocus
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                className="w-full h-10 px-3 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors duration-fast"
                 required
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 transition-colors"
+              className="w-full h-11 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 transition-opacity duration-fast"
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
 
-          <p className="mt-4 text-sm text-slate-500">
+          <p className="mt-5 text-sm text-muted-foreground">
             Default: admin / admin123
           </p>
         </div>

@@ -10,39 +10,45 @@
     font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   }
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    /* Unified emerald primary (fintech) */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 160 84% 39%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 160 84% 39%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --radius: 0.75rem;
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+    --shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+    --shadow-modal: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 25%;
+    --sidebar-primary: 160 84% 39%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 160 84% 39%;
+    --duration-fast: 150ms;
+    --duration-normal: 200ms;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -85,10 +91,16 @@
   display: none;
 }
 
-/* Hide scrollbar for Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth scroll with reduced-motion support */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @layer base {
@@ -99,5 +111,31 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  }
+}
+
+@layer utilities {
+  .animate-in-fade {
+    animation: fade-in var(--duration-normal, 200ms) ease-out;
+  }
+  .animate-in-slide-up {
+    animation: slide-up var(--duration-normal, 200ms) ease-out;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-in-fade,
+  .animate-in-slide-up {
+    animation-duration: 0.01ms;
   }
 }

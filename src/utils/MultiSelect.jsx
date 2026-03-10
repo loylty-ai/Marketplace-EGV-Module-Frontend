@@ -61,10 +61,19 @@ export default function MultiSelect({
             className="w-full justify-between min-h-[40px] h-auto"
           >
 
-            <div className="flex flex-wrap gap-1 max-w-[90%]">
-
+            {/* Scroller for selected/added options */}
+            <div
+              className="flex flex-wrap gap-1 max-w-[90%] overflow-x-auto overflow-y-auto"
+              style={{
+                maxHeight: "80px",
+                minHeight: "24px",
+                alignItems: "flex-start",
+                // Hide scrollbar but allow scroll for webkit browsers
+                scrollbarWidth: "thin",
+                scrollbarColor: "#d1d5db #f3f4f6"
+              }}
+            >
               {selectedOptions.length > 0 ? (
-
                 selectedOptions.map(option => (
                   <Badge
                     key={option.value}
@@ -80,7 +89,6 @@ export default function MultiSelect({
                         removeOption(option.value)
                       }}
                     />
-
                   </Badge>
                 ))
 
@@ -89,7 +97,6 @@ export default function MultiSelect({
                   {placeholder}
                 </span>
               )}
-
             </div>
 
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

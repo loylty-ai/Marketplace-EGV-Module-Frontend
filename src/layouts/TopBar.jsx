@@ -11,6 +11,16 @@ const routeNameMap = {
   tiers: "Tiers",
   vendors: "Vendors",
   partners: "Partners",
+  "bank-vendors": "Bank-Vendor Mapping",
+  "pricing-rules": "Pricing Rules",
+  "visibility-rules": "Visibility Rules",
+  "audit-logs": "Audit Logs",
+  "vendor-sync-runs": "Vendor Sync Logs",
+  users: "Users",
+  vouchers: "Vouchers",
+  "products": "Products",
+  merchandise: "Merchandise",
+  approvals: "Approvals",
 };
 
 const TopBar = ({ actions }) => {
@@ -31,63 +41,57 @@ const TopBar = ({ actions }) => {
     );
 
   return (
-    <header className="flex p-6 h-16 w-full items-center justify-between border-b border-neutral-200 bg-white px-6 shadow-sm font-['Manrope']">
-      <nav className="flex items-center gap-4" aria-label="Breadcrumb">
+    <header className="flex h-14 w-full items-center justify-between border-b border-border bg-card px-6 shadow-elevated shrink-0">
+      <nav className="flex items-center gap-4 min-w-0" aria-label="Breadcrumb">
         {isOperations() && !isAdmin() && (
           <div className="flex items-center gap-2 shrink-0">
             <BankSelector />
           </div>
         )}
-        <div className="flex items-center gap-1">
-        <NavLink
-          to="/"
-          className="text-neutral-500 text-sm hover:text-neutral-900"
-        >
-          Dashboard
-        </NavLink>
-
-        {pathnames.map((segment, index) => {
-          const to = "/" + pathnames.slice(0, index + 1).join("/");
-          const isLast = index === pathnames.length - 1;
-
-          return (
-            <div key={to} className="flex items-center gap-1">
-              <ChevronRight size={14} className="text-neutral-300" />
-
-              {isLast ? (
-                <span className="text-neutral-900 text-sm font-medium">
-                  {routeNameMap[segment] || segment}
-                </span>
-              ) : (
-                <NavLink
-                  to={to}
-                  className="text-neutral-500 text-sm hover:text-neutral-900"
-                >
-                  {routeNameMap[segment] || segment}
-                </NavLink>
-              )}
-            </div>
-          );
-        })}
+        <div className="flex items-center gap-1.5 min-w-0">
+          <NavLink
+            to="/"
+            className="text-muted-foreground text-sm hover:text-foreground transition-colors duration-fast"
+          >
+            Dashboard
+          </NavLink>
+          {pathnames.map((segment, index) => {
+            const to = "/" + pathnames.slice(0, index + 1).join("/");
+            const isLast = index === pathnames.length - 1;
+            return (
+              <div key={to} className="flex items-center gap-1.5 shrink-0">
+                <ChevronRight size={14} className="text-muted-foreground/70" aria-hidden />
+                {isLast ? (
+                  <span className="text-foreground text-sm font-medium">
+                    {routeNameMap[segment] || segment}
+                  </span>
+                ) : (
+                  <NavLink
+                    to={to}
+                    className="text-muted-foreground text-sm hover:text-foreground transition-colors duration-fast"
+                  >
+                    {routeNameMap[segment] || segment}
+                  </NavLink>
+                )}
+              </div>
+            );
+          })}
         </div>
       </nav>
-      <div className="flex items-center gap-4">
-        {actions ? (
-          actions
-        ) : (
-          <div className="flex items-center gap-3">
-            <button className="group flex items-center gap-2 rounded-lg border border-neutral-300 bg-white px-3 py-1.5 transition-all hover:border-neutral-400">
-              <Search size={16} />
-              <span className="text-sm font-medium">Command</span>
-              <kbd className="flex h-5 items-center rounded border border-neutral-200 bg-neutral-100 px-1.5 text-[10px]">
+      <div className="flex items-center gap-3 shrink-0">
+        {actions ?? (
+          <>
+            <button className="group flex items-center gap-2 rounded-lg border border-input bg-background px-3 py-2 transition-colors duration-fast hover:border-primary/40 hover:bg-muted/50" type="button">
+              <Search size={16} className="text-muted-foreground" />
+              <span className="text-sm font-medium text-foreground">Command</span>
+              <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
                 ⌘K
               </kbd>
             </button>
-
-            <button className="flex h-9 w-9 items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100">
+            <button className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted transition-colors duration-fast" type="button" aria-label="Notifications">
               <Bell size={18} />
             </button>
-          </div>
+          </>
         )}
       </div>
     </header>

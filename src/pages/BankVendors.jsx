@@ -125,16 +125,16 @@ export default function BankVendors() {
 
   return (
     <div className="w-full h-full p-6 flex flex-col gap-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
-            <Link2 className="w-5 h-5 text-emerald-700" />
+          <div className="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+            <Link2 className="w-5 h-5 text-primary" />
           </div>
-          <div className="flex flex-col">
-            <h1 className="text-2xl font-bold text-neutral-900">
+          <div className="min-w-0">
+            <h1 className="text-2xl font-bold text-foreground tracking-tight">
               Bank Vendor Configuration
             </h1>
-            <p className="text-sm text-neutral-600">
+            <p className="text-sm text-muted-foreground mt-0.5">
               Configure which vendors are integrated with each bank
             </p>
           </div>
@@ -156,53 +156,58 @@ export default function BankVendors() {
         />
       )}
 
-      <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden">
-        <table className="w-full">
-          <thead className="border-b border-neutral-200">
-            <tr className="text-left text-sm font-medium text-neutral-900">
-              <th className="px-3 py-3">Bank</th>
-              <th className="px-3 py-3 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              Array.from({ length: 5 }).map((_, i) => (
-                <tr key={i} className="border-b border-neutral-200">
-                  <td className="px-3 py-4">
-                    <div className="h-4 w-40 bg-neutral-200 rounded animate-pulse" />
-                  </td>
-                  <td className="px-3 py-4 text-right">
-                    <div className="h-8 w-24 bg-neutral-200 rounded animate-pulse ml-auto" />
-                  </td>
-                </tr>
-              ))
-            ) : banks.length === 0 ? (
-              <tr>
-                <td colSpan={2} className="px-3 py-12 text-center text-sm text-neutral-500">
-                  No banks found. Add a bank first, then configure vendors for it.
-                </td>
+      <div className="bg-card border border-border rounded-xl overflow-hidden shadow-card">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[320px]">
+            <thead className="sticky top-0 z-10 bg-muted/80 backdrop-blur-sm border-b border-border">
+              <tr className="text-left text-sm font-semibold text-foreground">
+                <th className="px-4 py-3.5">Bank</th>
+                <th className="px-4 py-3.5 text-right">Actions</th>
               </tr>
-            ) : (
-              banks.map((bank) => (
-                <tr key={bank.uuid ?? bank.bankId ?? bank.id} className="border-b border-neutral-200 hover:bg-neutral-50 transition-colors">
-                  <td className="px-3 py-4 font-medium text-neutral-900">
-                    {bank.name ?? bank.code ?? `Bank ${bank.bankId ?? bank.id}`}
-                  </td>
-                  <td className="px-3 py-4 text-right">
-                    <button
-                      type="button"
-                      onClick={() => handleConfigureBank(bank)}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-neutral-200 text-sm font-medium text-neutral-700 hover:bg-neutral-100 transition"
-                    >
-                      <Settings size={14} />
-                      Configure vendors
-                    </button>
+            </thead>
+            <tbody>
+              {loading ? (
+                Array.from({ length: 5 }).map((_, i) => (
+                  <tr key={i} className="border-b border-border">
+                    <td className="px-4 py-4">
+                      <div className="h-4 w-40 bg-muted rounded animate-pulse" />
+                    </td>
+                    <td className="px-4 py-4 text-right">
+                      <div className="h-9 w-28 bg-muted rounded-lg animate-pulse ml-auto" />
+                    </td>
+                  </tr>
+                ))
+              ) : banks.length === 0 ? (
+                <tr>
+                  <td colSpan={2} className="px-4 py-14 text-center text-sm text-muted-foreground">
+                    No banks found. Add a bank first, then configure vendors for it.
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                banks.map((bank) => (
+                  <tr
+                    key={bank.uuid ?? bank.bankId ?? bank.id}
+                    className="border-b border-border hover:bg-muted/50 transition-colors duration-fast"
+                  >
+                    <td className="px-4 py-4 font-medium text-foreground">
+                      {bank.name ?? bank.code ?? `Bank ${bank.bankId ?? bank.id}`}
+                    </td>
+                    <td className="px-4 py-4 text-right">
+                      <button
+                        type="button"
+                        onClick={() => handleConfigureBank(bank)}
+                        className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-border text-sm font-medium text-foreground bg-background hover:bg-muted transition-colors duration-fast"
+                      >
+                        <Settings size={14} />
+                        Configure vendors
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -256,30 +261,30 @@ function AddBankVendorConfiguration({
   const bankOptions = Array.isArray(banks) ? banks : [];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-      <div className="relative w-full max-w-[520px] bg-white rounded-[10px] shadow-[0px_4px_6px_-4px_rgba(0,0,0,0.10),0px_10px_15px_-3px_rgba(0,0,0,0.10)] border border-neutral-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 animate-in-fade">
+      <div className="relative w-full max-w-[520px] bg-card rounded-xl shadow-modal border border-border animate-in-slide-up">
         <div className="flex items-center justify-between px-6 pt-6">
-          <h2 className="text-[18px] font-semibold text-neutral-950">
+          <h2 className="text-lg font-semibold text-foreground">
             {isEditMode ? 'Configure' : 'Add'} Bank-Vendor Configuration
           </h2>
           <button
             onClick={onClose}
-            className="opacity-70 hover:opacity-100 transition"
+            className="p-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-fast"
             aria-label="Close"
             type="button"
           >
-            <X size={16} className="text-neutral-950" />
+            <X size={18} />
           </button>
         </div>
         <form className="flex flex-col gap-4 px-6 pt-4 pb-6" onSubmit={handleSubmit} autoComplete="off">
           <div className="flex flex-col gap-2">
-            <label className="text-[14px] font-medium text-neutral-950">Bank</label>
+            <label className="text-sm font-medium text-foreground">Bank</label>
             <div className="relative">
               <select
                 value={selectedBankUuid}
                 onChange={(e) => setSelectedBankUuid(e.target.value)}
                 disabled={isEditMode}
-                className="w-full h-9 px-3 pr-8 bg-neutral-50 border border-transparent rounded-lg text-[14px] font-medium text-neutral-700 focus:outline-none focus:ring-2 focus:ring-emerald-600 appearance-none disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full h-10 px-3 pr-9 bg-muted/50 border border-input rounded-lg text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary appearance-none disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-fast"
                 required
               >
                 <option value="">Select a bank</option>
@@ -291,41 +296,37 @@ function AddBankVendorConfiguration({
               </select>
               <ChevronDown
                 size={16}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
               />
             </div>
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-[14px] font-medium text-neutral-950">
+            <label className="text-sm font-medium text-foreground">
               Select Vendors to Integrate
             </label>
             {loadingAssignedVendors ? (
-              <div className="border border-neutral-200 rounded-[10px] px-4 py-8 flex items-center justify-center text-sm text-neutral-500">
+              <div className="border border-border rounded-lg px-4 py-8 flex items-center justify-center text-sm text-muted-foreground bg-muted/30">
                 Loading assigned vendors…
               </div>
             ) : (
-              <div className="flex flex-col gap-2 border border-neutral-200 rounded-[10px] px-4 py-4 max-h-[200px] overflow-y-auto">
+              <div className="flex flex-col gap-2.5 border border-border rounded-lg px-4 py-4 max-h-[200px] overflow-y-auto no-scrollbar bg-muted/20">
                 {(Array.isArray(vendors) ? vendors : []).map((vendor) => {
                   const checked = selectedVendorIds.includes(vendor.id ?? vendor.vendorId);
                   return (
                     <label
                       key={vendor.id ?? vendor.vendorId}
-                      className="flex items-center gap-2 cursor-pointer"
+                      className="flex items-center gap-3 cursor-pointer py-1 rounded-md hover:bg-muted/50 transition-colors duration-fast"
                     >
                       <input
                         type="checkbox"
                         checked={checked}
                         onChange={() => toggleVendor(vendor.id ?? vendor.vendorId)}
-                        className="w-4 h-4 rounded border-emerald-500 text-emerald-600 focus:ring-emerald-600 accent-emerald-600"
+                        className="w-4 h-4 rounded border-primary text-primary focus:ring-ring accent-primary"
                       />
-                      <span className="text-[14px] font-medium text-neutral-950">
-                        {vendor.name}
-                      </span>
+                      <span className="text-sm font-medium text-foreground">{vendor.name}</span>
                       {vendor.type && (
-                        <span className="text-[12px] font-medium text-neutral-500">
-                          ({vendor.type})
-                        </span>
+                        <span className="text-xs font-medium text-muted-foreground">({vendor.type})</span>
                       )}
                     </label>
                   );
@@ -333,30 +334,30 @@ function AddBankVendorConfiguration({
               </div>
             )}
             {selectedVendorIds.length > 0 && !loadingAssignedVendors && (
-              <div className="text-emerald-600 text-sm">
+              <p className="text-primary text-sm font-medium">
                 {selectedVendorIds.length} vendor{selectedVendorIds.length !== 1 ? 's' : ''} selected
-              </div>
+              </p>
             )}
           </div>
 
-          {error && <div className="text-red-500 text-sm">{error}</div>}
+          {error && (
+            <div className="text-destructive text-sm font-medium rounded-lg bg-destructive/10 px-3 py-2">
+              {error}
+            </div>
+          )}
 
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg border border-neutral-200 text-[14px] font-medium text-neutral-950 hover:bg-neutral-50 transition"
+              className="px-4 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground bg-background hover:bg-muted transition-colors duration-fast"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitDisabled}
-              className={`px-4 py-2 rounded-lg text-[14px] font-medium text-white transition ${
-                isSubmitDisabled
-                  ? 'bg-emerald-600 opacity-50 cursor-not-allowed'
-                  : 'bg-emerald-600 hover:bg-emerald-700'
-              }`}
+              className="px-4 py-2.5 rounded-lg text-sm font-medium text-primary-foreground bg-primary hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity duration-fast"
             >
               {isEditMode ? 'Update' : 'Create'}
             </button>

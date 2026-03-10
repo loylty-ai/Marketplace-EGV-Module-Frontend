@@ -11,20 +11,22 @@ export default function MainLayout() {
   const showNoBanksAssigned = !loading && !isAdmin() && isOperations() && (!banks || banks.length === 0);
 
   return (
-    <div className="flex h-screen bg-slate-50">
+    <div className="flex h-screen bg-background">
       <Sidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         <TopBar />
-        <main className="flex-1 overflow-y-auto no-scrollbar">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden no-scrollbar">
           {showNoBanksAssigned ? (
-            <div className="flex items-center justify-center min-h-[50vh] p-8">
+            <div className="flex items-center justify-center min-h-[50vh] p-8 animate-in-fade">
               <div className="text-center max-w-md">
-                <p className="text-slate-600 text-lg">You have no banks assigned.</p>
-                <p className="text-slate-500 mt-2">Contact an administrator to get access to banks.</p>
+                <p className="text-slate-600 text-lg font-medium">You have no banks assigned.</p>
+                <p className="text-slate-500 mt-2 text-sm">Contact an administrator to get access to banks.</p>
               </div>
             </div>
           ) : (
-            <Outlet />
+            <div className="animate-in-slide-up">
+              <Outlet />
+            </div>
           )}
         </main>
       </div>

@@ -35,14 +35,14 @@ export function Pagination({
       pageNumbers.push(p);
     }
     return (
-      <nav className={`p-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-700 ${className}`}>
+      <nav className={`p-4 flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground border-t border-border ${className}`}>
         <div>
-          Page <span className="font-bold">{page + 1}</span> of <span className="font-bold">{totalPages}</span> &bull;{" "}
-          <span className="ml-2">{total} {itemLabel}</span>
+          Page <span className="font-semibold text-foreground">{page + 1}</span> of <span className="font-semibold text-foreground">{totalPages}</span>
+          <span className="ml-2">• {total} {itemLabel}</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <button
-            className="px-2 py-1 rounded hover:bg-slate-100 disabled:opacity-60"
+            className="px-2.5 py-1.5 rounded-lg hover:bg-muted disabled:opacity-50 transition-colors duration-fast font-medium"
             disabled={page === 0}
             onClick={() => setPage(Math.max(0, page - 1))}
             aria-label="Previous page"
@@ -53,7 +53,9 @@ export function Pagination({
           {pageNumbers.map((p) => (
             <button
               key={p}
-              className={`px-2 py-1 rounded ${p === page ? 'bg-emerald-600 text-white' : 'hover:bg-slate-100'}`}
+              className={`min-w-[2rem] px-2.5 py-1.5 rounded-lg transition-colors duration-fast font-medium ${
+                p === page ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-foreground'
+              }`}
               onClick={() => setPage(p)}
               disabled={p === page}
               type="button"
@@ -62,7 +64,7 @@ export function Pagination({
             </button>
           ))}
           <button
-            className="px-2 py-1 rounded hover:bg-slate-100 disabled:opacity-60"
+            className="px-2.5 py-1.5 rounded-lg hover:bg-muted disabled:opacity-50 transition-colors duration-fast font-medium"
             disabled={page === totalPages - 1 || totalPages === 0}
             onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
             aria-label="Next page"
@@ -71,13 +73,13 @@ export function Pagination({
             &gt;
           </button>
           <select
-            className="ml-2 px-1 py-1 border border-slate-200 rounded"
+            className="ml-2 px-2.5 py-1.5 border border-border rounded-lg bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ring"
             value={size}
             onChange={e => { setSize(Number(e.target.value)); setPage(0); }}
           >
-            {pageSizeOptions.map(opt =>
+            {pageSizeOptions.map(opt => (
               <option key={opt} value={opt}>{opt} / page</option>
-            )}
+            ))}
           </select>
         </div>
       </nav>

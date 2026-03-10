@@ -103,12 +103,22 @@ export default function SyncJobLogs() {
                     className="border-b border-neutral-200 hover:bg-neutral-50 transition-colors"
                   >
                     <td className="px-4 py-4 w-28 font-medium text-neutral-900">{index + 1}</td>
-                    <td className="px-4 py-4">
+                    <td className="px-4 py-4 text-neutral-900 font-semibold">
                 
                         {syncJobLog.vendorName}
                 
                     </td>
-                    <td className="px-4 py-4 text-neutral-700">{syncJobLog.status}</td>
+                    <td
+                      className={`px-4 py-4 font-semibold ${
+                        syncJobLog.status === 'FAILED'
+                          ? 'text-red-600'
+                          : syncJobLog.status === 'SUCCESS'
+                          ? 'text-green-600'
+                          : 'text-neutral-700'
+                      }`}
+                    >
+                      {syncJobLog.status}
+                    </td>
                     <td className="px-4 py-4 text-neutral-700">{syncJobLog.runId}</td>
                     <td className="px-4 py-4 text-neutral-700">{syncJobLog.itemsFetched}</td>
                     <td className="px-4 py-4 text-neutral-700">{syncJobLog.startedAt}</td>

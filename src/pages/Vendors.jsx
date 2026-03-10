@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { Pagination } from "../utils/Pagination";
 import AddButton from "../utils/AddButton";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function VendorsTable() {
   const [vendors, setVendors] = useState([]);
@@ -84,8 +85,9 @@ export default function VendorsTable() {
   };
 
   const handleDeactivate = async (vendor) => {
-    try {
-      await api.put(`/vendors/${vendor.uuid}`, { name: vendor.name, type: vendor.type, isActive: false });
+    try {   
+      const idempotencyKey = uuidv4();
+      await api.put(`/vendors/${vendor.uuid}`, { name: vendor.name, type: vendor.type, apiBaseUrl: vendor.apiBaseUrl, isActive: false }, { headers: { 'X-Idempotency-Key': idempotencyKey } });
       toast.success('Vendor deactivated successfully.');
       fetchVendors();
     } catch (err) {
@@ -95,7 +97,8 @@ export default function VendorsTable() {
 
   const handleActivate = async (vendor) => {
     try {
-      await api.put(`/vendors/${vendor.uuid}`, { name: vendor.name, type: vendor.type, isActive: true });
+      const idempotencyKey = uuidv4();
+      await api.put(`/vendors/${vendor.uuid}`, { name: vendor.name, type: vendor.type, apiBaseUrl: vendor.apiBaseUrl, isActive: true }, { headers: { 'X-Idempotency-Key': idempotencyKey } });
       toast.success('Vendor activated successfully.');
       fetchVendors();
     } catch (err) {

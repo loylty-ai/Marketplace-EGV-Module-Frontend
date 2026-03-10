@@ -63,8 +63,8 @@ const NavItem = ({ icon, label, href, active = false, onClick }) => {
   return (
     <NavLink
       to={href}
-      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${
-        active ? 'bg-emerald-600 text-white shadow-sm' : 'text-neutral-600 hover:bg-neutral-100'
+      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-fast ${
+        active ? 'bg-primary text-primary-foreground shadow-card' : 'text-slate-600 hover:bg-slate-100'
       }`}
       onClick={onClick}
       end={href === '/'}
@@ -78,13 +78,13 @@ const NavItem = ({ icon, label, href, active = false, onClick }) => {
 const MenuHeader = ({ icon, label, isOpen, onClick }) => {
   return (
     <button
-      className="w-full flex items-center gap-3 px-3 py-2 text-neutral-600 hover:bg-neutral-50 rounded-xl transition-colors"
+      className="w-full flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors duration-fast"
       onClick={onClick}
       type="button"
     >
       {icon}
-      <span className="flex flex-1">{label}</span>
-      {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+      <span className="flex flex-1 text-sm font-medium">{label}</span>
+      {isOpen ? <ChevronUp size={16} className="text-slate-400" /> : <ChevronDown size={16} className="text-slate-400" />}
     </button>
   );
 };
@@ -93,14 +93,14 @@ const SubNavItem = ({ icon, label, href, active = false, onClick }) => {
   return (
     <NavLink
       to={href}
-      className={`w-full pl-9 flex items-center gap-3 pr-3 py-2 rounded-xl transition-colors
-        ${active ? 'bg-emerald-600 text-white shadow-sm' : 'text-neutral-600 hover:bg-neutral-100'}
+      className={`w-full pl-9 flex items-center gap-3 pr-3 py-2.5 rounded-lg transition-colors duration-fast
+        ${active ? 'bg-primary text-primary-foreground shadow-card' : 'text-slate-600 hover:bg-slate-100'}
       `}
       onClick={onClick}
-      end // so exact path matches for leaf route
+      end
     >
-      <div className="opacity-70">{icon}</div>
-      <span className="text-sm font-normal">{label}</span>
+      <div className={active ? 'opacity-90' : 'opacity-70'}>{icon}</div>
+      <span className="text-sm font-medium">{label}</span>
     </NavLink>
   );
 };
@@ -165,41 +165,42 @@ export function Sidebar() {
   return (
     <div
       className={`${
-        collapsed ? 'w-16' : 'w-72'
-      } flex flex-col h-screen bg-white border-r border-neutral-200 transition-all duration-300 font-['Manrope']`}
+        collapsed ? 'w-16' : 'w-[280px]'
+      } flex flex-col h-screen bg-card border-r border-border shadow-card transition-[width] duration-normal ease-out shrink-0`}
     >
-      <div className="p-4 flex items-center border-b border-neutral-200 h-[77px]">
-        <div className="flex items-center gap-3 p-4">
+      <div className="p-4 flex items-center border-b border-border h-[72px] shrink-0">
+        <div className="flex items-center gap-3 w-full min-w-0">
           {!collapsed && (
             <>
-              <div className="rounded-[14px] text-white bg-gradient-to-b from-emerald-500 via-emerald-600 to-emerald-700 w-10 h-10 text-center flex items-center justify-center font-bold text-lg">
+              <div className="rounded-xl bg-primary text-primary-foreground w-10 h-10 flex items-center justify-center font-bold text-lg shrink-0 shadow-card">
                 LR
               </div>
-              <div className="flex flex-col flex-1">
-                <span className="text-neutral-900 font-bold text-lg leading-tight">LR Core</span>
-                <span className="text-xs text-neutral-500 font-normal">Voucher Control Program</span>
-              </div>{' '}
+              <div className="flex flex-col flex-1 min-w-0">
+                <span className="text-foreground font-bold text-base leading-tight truncate">LR Core</span>
+                <span className="text-xs text-muted-foreground font-normal truncate">Voucher Control Program</span>
+              </div>
             </>
           )}
           <button
-            className="p-2 rounded-lg hover:bg-neutral-100  text-neutral-500"
+            className="p-2 rounded-lg hover:bg-accent text-muted-foreground transition-colors duration-fast shrink-0"
             onClick={() => setCollapsed(!collapsed)}
             type="button"
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
-            <MoreHorizontal size={16} />
+            <MoreHorizontal size={18} />
           </button>
         </div>
       </div>
 
-      <div className="px-4 pt-4 pb-2 bg-gradient-to-b from-emerald-50 to-white border-b border-neutral-50">
-        <button className="w-full flex items-center gap-2 px-3 py-2 bg-emerald-600 rounded-xl shadow-sm text-white hover:bg-emerald-700 transition-colors">
-          <Zap size={16} className="text-white fill-white" />
-          <span className="text-white flex-1 text-left text-sm font-medium">Quick Actions</span>
-          <ChevronDown size={16} />
+      <div className="px-3 pt-4 pb-3 border-b border-border">
+        <button className="w-full flex items-center gap-2 px-3 py-2.5 bg-primary text-primary-foreground rounded-lg shadow-card hover:opacity-95 transition-opacity duration-fast" type="button">
+          <Zap size={16} className="fill-current" />
+          <span className="flex-1 text-left text-sm font-medium">Quick Actions</span>
+          <ChevronDown size={16} className="opacity-80" />
         </button>
       </div>
 
-      <div className="flex-1 px-3 pt-3 overflow-y-auto space-y-1 no-scrollbar">
+      <div className="flex-1 px-3 pt-3 overflow-y-auto overflow-x-hidden space-y-0.5 no-scrollbar">
         {NAV_STRUCTURE.map((navEntry) => {
           if (navEntry.type === 'item') {
             return (
@@ -243,28 +244,26 @@ export function Sidebar() {
         })}
       </div>
 
-      <div className="p-4 border-t border-neutral-200 bg-neutral-50 flex gap-3 flex-col">
-        <div className="flex items-center gap-3 p-3 bg-white border border-neutral-200 rounded-xl">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-b from-emerald-500 to-emerald-600 text-white font-semibold flex items-center justify-center text-lg">
-            A
+      <div className="p-4 border-t border-border bg-muted/50 flex gap-3 flex-col shrink-0">
+        <div className="flex items-center gap-3 p-3 bg-card border border-border rounded-xl shadow-card">
+          <div className="w-9 h-9 rounded-full bg-primary text-primary-foreground font-semibold flex items-center justify-center text-sm shrink-0">
+            {user?.username?.charAt(0)?.toUpperCase() || 'A'}
           </div>
-          <div className="flex flex-1 ml-2 flex-col">
-            <span className="text-sm font-semibold text-neutral-900">{user?.username}</span>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">
+          <div className="flex flex-1 min-w-0 flex-col">
+            <span className="text-sm font-semibold text-foreground truncate">{user?.username}</span>
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-primary">
               {user?.roles?.join(', ')}
             </span>
           </div>
-          <div>
-            <ChevronDown size={16} />
-          </div>
+          <ChevronDown size={14} className="text-muted-foreground shrink-0" />
         </div>
 
-        <div className="space-y-1">
-          <button className="flex w-full gap-3 px-3 py-2 items-center text-neutral-600 hover:bg-neutral-100 rounded-lg transition-colors text-sm font-medium">
+        <div className="space-y-0.5">
+          <button className="flex w-full gap-3 px-3 py-2 items-center text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-fast text-sm font-medium" type="button">
             <Settings size={16} />
             Settings
           </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm font-medium" onClick={handleLogout}>
+          <button className="w-full flex items-center gap-3 px-3 py-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors duration-fast text-sm font-medium" onClick={handleLogout} type="button">
             <LogOut size={16} />
             Sign Out
           </button>

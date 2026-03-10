@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { MoreVertical, Pencil, X, Receipt, ChevronDown, ChevronUp, Trash2 } from "lucide-react";
+import { MoreVertical, Pencil, X, Receipt, ChevronDown, ChevronUp, Trash2, CircleX, CircleCheck } from "lucide-react";
 import api from "../api/axios";
 import toast from "react-hot-toast";
 import { Pagination } from "../utils/Pagination";
@@ -8,6 +8,7 @@ import { useAuth } from "../auth/AuthContext";
 import { useBank } from "../auth/BankContext";
 import { SelectBox } from "../utils/Select";
 import MultiSelect from "../utils/MultiSelect";
+import { v7 as uuidv7 } from 'uuid';
 
 /**
  * Util for logging production-save.
@@ -384,6 +385,31 @@ export default function PricingRules() {
     setSelectedCardUUID("");
   }, []);
 
+  const handleDeactivatePricingRule = useCallback(async (pricingRule) => {
+    const idempotencyKey = uuidv7();
+    try{
+      await api.put(`/pricing-rules/${pricingRule.uuid}`, { name: pricingRule.name, voucherIds: pricingRule.voucherIds, bankId: pricingRule.bankId, cardId: pricingRule.cardId, cardTierId: pricingRule.cardTierId, discountType: pricingRule.discountType, discountValue: pricingRule.discountValue, priority: pricingRule.priority, isActive: false }, { headers: { "X-Idempotency-Key": idempotencyKey } });
+      toast.success("Pricing rule deactivated successfully.");
+      fetchPricingRules();
+    } catch (err) {
+      logError(err);
+      toast.error("Failed to deactivate pricing rule.");
+    }
+  }, [fetchPricingRules]);
+
+  const handleActivatePricingRule = useCallback(async (pricingRule) => {
+    console.log("handleActivatePricingRule", pricingRule);
+    const idempotencyKey = uuidv7();
+    try{
+      await api.put(`/pricing-rules/${pricingRule.uuid}`, { name: pricingRule.name, voucherIds: pricingRule.voucherIds, bankId: pricingRule.bankId, cardId: pricingRule.cardId, cardTierId: pricingRule.cardTierId, discountType: pricingRule.discountType, discountValue: pricingRule.discountValue, priority: pricingRule.priority, isActive: true }, { headers: { "X-Idempotency-Key": idempotencyKey } });
+      toast.success("Pricing rule activated successfully.");
+      fetchPricingRules();
+    } catch (err) {
+      logError(err);
+      toast.error("Failed to activate pricing rule.");
+    }
+  }, [fetchPricingRules]);
+
   // Memoize filter according to bank context
   const applyBankFilter = useMemo(() => !isAdmin(), [isAdmin]);
   const displayedPricingRules = useMemo(() => {
@@ -732,6 +758,8 @@ export default function PricingRules() {
                             pricingRule={r}
                             onEdit={handleEditModal}
                             onDelete={handleDeletePricingRule}
+                            onDeactivate={handleDeactivatePricingRule}
+                            onActivate={handleActivatePricingRule}
                             banks={banks}
                           />
                         </td>
@@ -948,6 +976,8 @@ const PricingRuleRowActions = React.memo(function PricingRuleRowActions({
   onEdit,
   onDelete,
   banks,
+  onDeactivate,
+  onActivate,
 }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const buttonRef = React.useRef(null);
@@ -1046,6 +1076,30 @@ const PricingRuleRowActions = React.memo(function PricingRuleRowActions({
               <Pencil size={16} />
               Edit
             </button>
+            {pricingRule.isActive ? (
+              <button
+                className="w-full px-3 py-2 flex items-center text-left text-sm gap-2 hover:bg-neutral-50"
+                onClick={() => {
+                  setIsOpen(false);
+                  onDeactivate?.(pricingRule, banks);
+                }}
+                type="button"
+              >
+                <CircleX size={16} />
+                Deactivate
+              </button>
+            ) : (
+              <button
+                className="w-full px-3 py-2 flex items-center text-left text-sm gap-2 hover:bg-neutral-50"
+                onClick={() => {
+                  setIsOpen(false);
+                  onActivate?.(pricingRule, banks);
+                }}
+                type="button"
+              >
+                <CircleCheck size={16} />
+                Activate
+              </button> )}
             <button
               className="w-full px-3 py-2 flex items-center text-left text-sm gap-2 hover:bg-neutral-50"
               onClick={handleDelete}

@@ -125,12 +125,25 @@ function AuditLogs() {
                     className="border-b border-neutral-200 hover:bg-neutral-50 transition-colors"
                   >
               
-                    <td className="px-4 py-4">
+                    <td className="px-4 py-4 font-semibold">
                     
                         {auditLog.entityName}
                      
                     </td>
-                    <td className="px-4 py-4 text-neutral-700">{auditLog.action}</td>
+                    <td
+                      className={`px-4 py-4 font-semibold ${
+                        auditLog.action &&
+                        (auditLog.action.toUpperCase() === 'DELETE'
+                          ? 'text-red-600'
+                          : auditLog.action.toUpperCase() === 'CREATE'
+                          ? 'text-green-600'
+                          : auditLog.action.toUpperCase() === 'UPDATE'
+                          ? 'text-yellow-600'
+                          : 'text-neutral-700')
+                      }`}
+                    >
+                      {auditLog.action}
+                    </td>
                     <td className="px-4 py-4 text-neutral-700">{auditLog.username}</td>
                     <td className="px-4 py-4 text-neutral-700">{auditLog.status}</td>
                     <td className="px-4 py-4 text-neutral-700">{auditLog.entityData}</td>

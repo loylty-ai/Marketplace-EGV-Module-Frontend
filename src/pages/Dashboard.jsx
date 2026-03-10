@@ -96,19 +96,18 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="w-full p-6 flex flex-col gap-6 bg-white">
-      <div className="flex justify-between items-center">
+    <div className="w-full p-6 flex flex-col gap-6">
+      <div className="flex flex-wrap justify-between items-start gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-neutral-900">
+          <h1 className="text-2xl font-bold text-foreground tracking-tight">
             Welcome, {user.username}
           </h1>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-muted-foreground mt-1">
             Your control center for the voucher operating system
           </p>
         </div>
-
-        <div className="flex items-center justify-center gap-2 bg-emerald-100 text-emerald-700 border border-emerald-300 rounded-lg px-3 py-1 text-xs font-medium">
-          <Sparkles size={16} />
+        <div className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/20 rounded-lg px-3 py-1.5 text-xs font-medium">
+          <Sparkles size={14} className="shrink-0" />
           3 AI recommendations
         </div>
       </div>
@@ -118,43 +117,42 @@ export default function Dashboard() {
           title="Total Banks"
           value={banksCount}
           change={`${newBanksCount} this month`}
-          icon={<Building2 className="text-emerald-600" size={20} />}
-          iconBg="bg-emerald-50"
+          icon={<Building2 className="text-primary" size={20} />}
+          iconBg="bg-primary/10"
         />
         <StatCard
           title="Active Vendors"
           value={vendorsCount}
           change={`${newVendorsCount} this month`}
           icon={<TrendingUp className="text-blue-600" size={20} />}
-          iconBg="bg-blue-50"
+          iconBg="bg-blue-500/10"
         />
         <StatCard
           title="Active Cards"
           value={cardsCount}
           change={`${newCardsCount} this month`}
-          icon={<CreditCard className="text-purple-600" size={20} />}
-          iconBg="bg-purple-50"
+          icon={<CreditCard className="text-violet-600" size={20} />}
+          iconBg="bg-violet-500/10"
         />
         <StatCard
           title="Total Products"
           value={vouchersCount}
           change={`${newVouchersCount} this month`}
           icon={<Package className="text-amber-600" size={20} />}
-          iconBg="bg-amber-50"
+          iconBg="bg-amber-500/10"
         />
       </div>
 
-      <div className="bg-gradient-to-b from-emerald-50 to-white border-2 border-emerald-200 rounded-xl p-4 flex items-center justify-between">
+      <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-center justify-between transition-colors duration-fast">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-b from-emerald-500 to-emerald-700 flex items-center justify-center text-white">
-            <Sparkles size={16} />
+          <div className="w-10 h-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shadow-card">
+            <Sparkles size={18} />
           </div>
           <div>
-            <p className="font-semibold text-emerald-900">
-              AI Recommendations
-            </p>
+            <p className="font-semibold text-foreground">AI Recommendations</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Personalized insights for your workflow</p>
           </div>
-          <span className="text-xs bg-emerald-100 text-emerald-700 border border-emerald-300 px-2 py-0.5 rounded-md">
+          <span className="text-xs bg-primary/15 text-primary font-medium px-2.5 py-1 rounded-md border border-primary/20">
             3 insights
           </span>
         </div>
@@ -173,16 +171,16 @@ export default function Dashboard() {
 
 function StatCard({ title, value, change, icon, iconBg }) {
   return (
-    <div className="bg-white shadow-md hover:shadow-lg border border-neutral-200 rounded-xl p-4 flex justify-between items-center">
-      <div>
-        <p className="text-xs text-neutral-500">{title}</p>
-        <p className="text-2xl font-bold text-neutral-900">{value}</p>
-        <p className="flex items-center justify-center gap-2 text-xs text-emerald-600 mt-1"><TrendingUp size={16} />{change}</p>
+    <div className="bg-card border border-border rounded-xl p-5 flex justify-between items-center shadow-card hover:shadow-elevated transition-shadow duration-normal">
+      <div className="min-w-0">
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{title}</p>
+        <p className="text-2xl font-bold text-foreground mt-1 tabular-nums">{value}</p>
+        <p className="flex items-center gap-1.5 text-xs text-primary font-medium mt-2">
+          <TrendingUp size={14} />
+          {change}
+        </p>
       </div>
-
-      <div
-        className={`w-10 h-10 rounded-lg flex items-center justify-center ${iconBg}`}
-      >
+      <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${iconBg}`}>
         {icon}
       </div>
     </div>
@@ -191,11 +189,8 @@ function StatCard({ title, value, change, icon, iconBg }) {
 
 function PlatformHealth() {
   return (
-    <div className="bg-white border border-neutral-200 rounded-xl p-6">
-      <h3 className="text-sm font-medium text-neutral-900 mb-6">
-        Platform Health
-      </h3>
-
+    <div className="bg-card border border-border rounded-xl p-6 shadow-card">
+      <h3 className="text-base font-semibold text-foreground mb-6">Platform Health</h3>
       <Progress
         label="Configuration Completeness"
         value={78}
@@ -205,7 +200,7 @@ function PlatformHealth() {
       <Progress
         label="Vendor Integration Health"
         value={96}
-        color="bg-emerald-500"
+        color="bg-primary"
         desc="27 of 28 vendors active"
       />
       <Progress
@@ -220,56 +215,40 @@ function PlatformHealth() {
 
 function Progress({ label, value, color, desc }) {
   return (
-    <div className="mb-6">
-      <div className="flex justify-between text-xs font-medium text-neutral-900">
+    <div className="mb-6 last:mb-0">
+      <div className="flex justify-between text-sm font-medium text-foreground">
         <span>{label}</span>
-        <span className="text-lg font-bold">{value}%</span>
+        <span className="font-bold tabular-nums">{value}%</span>
       </div>
-
-      <div className="w-full bg-neutral-100 rounded-full h-2 mt-2">
+      <div className="w-full bg-muted rounded-full h-2.5 mt-2 overflow-hidden">
         <div
-          className={`${color} h-2 rounded-full`}
+          className={`${color} h-2.5 rounded-full transition-[width] duration-normal`}
           style={{ width: `${value}%` }}
         />
       </div>
-
-      <p className="text-xs text-neutral-500 mt-1">{desc}</p>
+      <p className="text-xs text-muted-foreground mt-1.5">{desc}</p>
     </div>
   );
 }
 
 function QuickWins() {
   const items = [
-    {
-      title: "Add card tiers to ICICI Coral",
-      desc: "Unlock tiered pricing • 5 min",
-    },
-    {
-      title: "Update Axis Bank contact details",
-      desc: "Keep records current • 2 min",
-    },
-    {
-      title: "Review 3 pending audit logs",
-      desc: "Ensure compliance • 8 min",
-    },
+    { title: "Add card tiers to ICICI Coral", desc: "Unlock tiered pricing • 5 min" },
+    { title: "Update Axis Bank contact details", desc: "Keep records current • 2 min" },
+    { title: "Review 3 pending audit logs", desc: "Ensure compliance • 8 min" },
   ];
 
   return (
-    <div className="bg-white border border-neutral-200 rounded-xl p-6">
-      <h3 className="text-sm font-medium text-neutral-900 mb-6">
-        Quick Wins
-      </h3>
-
-      <div className="flex flex-col gap-3">
+    <div className="bg-card border border-border rounded-xl p-6 shadow-card">
+      <h3 className="text-base font-semibold text-foreground mb-6">Quick Wins</h3>
+      <div className="flex flex-col gap-2">
         {items.map((item, i) => (
           <div
             key={i}
-            className="bg-neutral-50 border border-neutral-200 rounded-lg p-3"
+            className="bg-muted/50 border border-border rounded-lg p-3.5 hover:bg-muted/70 transition-colors duration-fast"
           >
-            <p className="text-xs font-medium text-neutral-900">
-              {item.title}
-            </p>
-            <p className="text-xs text-neutral-500 mt-1">{item.desc}</p>
+            <p className="text-sm font-medium text-foreground">{item.title}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
           </div>
         ))}
       </div>
@@ -279,26 +258,13 @@ function QuickWins() {
 
 function SystemStatus() {
   return (
-    <div className="bg-white border border-neutral-200 rounded-xl p-6">
-      <h3 className="text-sm font-medium text-neutral-900 mb-6">
-        System Status
-      </h3>
-
-      <StatusItem
-        title="API Services"
-        desc="All operational"
-        success
-      />
-      <StatusItem
-        title="Vendor Integrations"
-        desc="28/28 active"
-        success
-      />
-      <StatusItem
-        title="Product Sync"
-        desc="In progress..."
-        warning
-      />
+    <div className="bg-card border border-border rounded-xl p-6 shadow-card">
+      <h3 className="text-base font-semibold text-foreground mb-6">System Status</h3>
+      <div className="flex flex-col gap-2">
+        <StatusItem title="API Services" desc="All operational" success />
+        <StatusItem title="Vendor Integrations" desc="28/28 active" success />
+        <StatusItem title="Product Sync" desc="In progress..." warning />
+      </div>
     </div>
   );
 }
@@ -306,24 +272,15 @@ function SystemStatus() {
 function StatusItem({ title, desc, success, warning }) {
   return (
     <div
-      className={`flex items-center gap-3 p-3 rounded-lg border mb-3 ${
-        success
-          ? "bg-emerald-50 border-emerald-200"
-          : "bg-amber-50 border-amber-200"
+      className={`flex items-center gap-3 p-3.5 rounded-lg border ${
+        success ? "bg-primary/10 border-primary/20" : "bg-amber-500/10 border-amber-500/20"
       }`}
     >
-      {success && (
-        <CheckCircle2 className="text-emerald-600" size={16} />
-      )}
-      {warning && (
-        <AlertTriangle className="text-amber-600" size={16} />
-      )}
-
-      <div>
-        <p className="text-xs font-medium text-neutral-900">
-          {title}
-        </p>
-        <p className="text-xs text-neutral-600">{desc}</p>
+      {success && <CheckCircle2 className="text-primary shrink-0" size={18} />}
+      {warning && <AlertTriangle className="text-amber-600 shrink-0" size={18} />}
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-foreground">{title}</p>
+        <p className="text-xs text-muted-foreground">{desc}</p>
       </div>
     </div>
   );
@@ -331,55 +288,26 @@ function StatusItem({ title, desc, success, warning }) {
 
 function RecentActivity() {
   const activities = [
-    {
-      title: "New vendor added",
-      desc: "Qwikcilver",
-      time: "2 hours ago",
-      color: "bg-emerald-500",
-    },
-    {
-      title: "Pricing rule updated",
-      desc: "SBI Platinum - 15%",
-      time: "4 hours ago",
-      color: "bg-blue-500",
-    },
-    {
-      title: "Bank-Vendor config",
-      desc: "ICICI & VoucherGram",
-      time: "6 hours ago",
-      color: "bg-blue-500",
-    },
-    {
-      title: "Product catalog sync",
-      desc: "Amazon Vouchers",
-      time: "8 hours ago",
-      color: "bg-amber-500",
-    },
+    { title: "New vendor added", desc: "Qwikcilver", time: "2 hours ago", color: "bg-primary" },
+    { title: "Pricing rule updated", desc: "SBI Platinum - 15%", time: "4 hours ago", color: "bg-blue-500" },
+    { title: "Bank-Vendor config", desc: "ICICI & VoucherGram", time: "6 hours ago", color: "bg-blue-500" },
+    { title: "Product catalog sync", desc: "Amazon Vouchers", time: "8 hours ago", color: "bg-amber-500" },
   ];
 
   return (
-    <div className="bg-white border border-neutral-200 rounded-xl p-6">
-      <h3 className="text-sm font-medium text-neutral-900 mb-6">
-        Recent Activity
-      </h3>
-
-      <div className="flex flex-col gap-3">
+    <div className="bg-card border border-border rounded-xl p-6 shadow-card">
+      <h3 className="text-base font-semibold text-foreground mb-6">Recent Activity</h3>
+      <div className="flex flex-col gap-2">
         {activities.map((a, i) => (
           <div
             key={i}
-            className="bg-neutral-50 border border-neutral-200 rounded-lg p-3 flex gap-3"
+            className="bg-muted/50 border border-border rounded-lg p-3.5 flex gap-3 hover:bg-muted/70 transition-colors duration-fast"
           >
-            <div
-              className={`w-2 h-2 mt-2 rounded-full ${a.color}`}
-            />
-            <div>
-              <p className="text-xs font-medium text-neutral-900">
-                {a.title}
-              </p>
-              <p className="text-xs text-neutral-600">{a.desc}</p>
-              <p className="text-xs text-neutral-400">
-                {a.time}
-              </p>
+            <div className={`w-2.5 h-2.5 mt-1 rounded-full shrink-0 ${a.color}`} />
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-foreground">{a.title}</p>
+              <p className="text-xs text-muted-foreground">{a.desc}</p>
+              <p className="text-xs text-muted-foreground/80 mt-0.5">{a.time}</p>
             </div>
           </div>
         ))}
